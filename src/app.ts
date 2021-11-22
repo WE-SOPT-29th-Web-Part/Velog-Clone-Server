@@ -20,6 +20,8 @@ export async function createApp(config: AppConfig) {
   app.use(morgan("dev"));
   app.use(cors());
 
+  app.use(express.json());
+
   const apiRouter = await getAPIEndpoints(db);
   app.use("/api", apiRouter);
 

@@ -1,5 +1,7 @@
 import { LocalStorage } from "node-localstorage";
+import { nanoid } from "nanoid";
 import { Repository } from ".";
+import { Article } from "../entity/article";
 import { File } from "../entity/file";
 
 export class LocalStorageRepository implements Repository {
@@ -29,6 +31,52 @@ export class LocalStorageRepository implements Repository {
     }
   }
 
+  async createArticle(article: Omit<Article, "id">): Promise<void> {
+    const articles = await this.getArticles();
+    articles.push({ id: nanoid(), ...article });
+    await this.saveArticles(articles);
+  }
+
+  async updateArticle(
+    articleId: string,
+    article: Omit<Article, "id">
+  ): Promise<void> {
+    const articles = await this.getArticles();
+    const index = articles.findIndex((article) => article.id === articleId);
+    if (index === -1) {
+      throw new Error("삭제할 대상 글이 없습니다.");
+    }
+
+    articles[index] = { id: articleId, ...article };
+
+    await this.saveArticles(articles);
+  }
+
+  async getArticle(articleId: string): Promise<Article | null> {
+    const articles = await this.getArticles();
+    const foundArticle = articles.find((article) => article.id === articleId);
+
+    if (foundArticle) {
+      return foundArticle;
+    } else {
+      return null;
+    }
+  }
+
+  async getArticles(): Promise<Article[]> {
+    const raw = this.localStorage.getItem("articles");
+    if (!raw) {
+      return [];
+    }
+    return JSON.parse(raw) as Article[];
+  }
+
+  async deleteArticle(articleId: string): Promise<void> {
+    const articles = await this.getArticles();
+    const newArticles = articles.filter((article) => article.id !== articleId);
+    await this.saveArticles(newArticles);
+  }
+
   private getFiles() {
     const raw = this.localStorage.getItem("files");
     if (!raw) {
@@ -39,5 +87,9 @@ export class LocalStorageRepository implements Repository {
 
   private saveFiles(files: File[]) {
     this.localStorage.setItem("files", JSON.stringify(files));
+  }
+
+  private async saveArticles(articles: Article[]) {
+    this.localStorage.setItem("articles", JSON.stringify(articles));
   }
 }
