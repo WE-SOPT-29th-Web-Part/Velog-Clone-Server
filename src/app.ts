@@ -29,6 +29,7 @@ export async function createApp(config: AppConfig) {
   function start() {
     printer.info("#########################");
     printer.info("# Velog Clone 미니 서버 #");
+    printer.info("#          by. Tekiter  #");
     printer.info("#########################");
 
     app
