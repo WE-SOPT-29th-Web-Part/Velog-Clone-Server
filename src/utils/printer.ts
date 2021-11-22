@@ -7,8 +7,7 @@ function warn(message: unknown) {
 }
 
 function error(message: unknown) {
-  console.error("[ERROR]: 알 수 없는 오류가 발생했습니다:");
-  console.error(message + "");
+  console.error(`[ERROR]: ${message}`);
 }
 
 export default {

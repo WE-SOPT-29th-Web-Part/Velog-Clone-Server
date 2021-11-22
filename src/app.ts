@@ -19,26 +19,26 @@ export async function createApp(config: AppConfig) {
   app.use(morgan("dev"));
 
   const apiRouter = await getAPIEndpoints(db);
-  app.use(apiRouter);
+  app.use("/api", apiRouter);
 
-  app.use((req, res) => {
-    res.status(404).json({ message: "Not Found" });
+  app.use("*", (req, res) => {
+    res.status(404).json({ message: "올바르지 않은 경로입니다." });
   });
-  app.use(defaultErrorHandler);
+  app.use(defaultErrorHandler());
 
   function start() {
-    printer.info("###########################");
-    printer.info("## Velog Clone 미니 서버 ##");
-    printer.info("###########################");
+    printer.info("#########################");
+    printer.info("# Velog Clone 미니 서버 #");
+    printer.info("#########################");
 
     app
       .listen(config.port, () => {
-        printer.info(`서버를 시작했습니다. (http://localhost:${config.port})`);
+        printer.info(`서버를 시작했습니다. [http://localhost:${config.port}]`);
       })
       .on("error", (err: ServerError) => {
         if (err.code === "EADDRINUSE") {
-          printer.warn(
-            `[warn]: 서버 시작에 실패했습니다. ${config.port}번 포트가 사용중입니다.`
+          printer.error(
+            `서버 시작에 실패했습니다. ${config.port}번 포트를 다른 프로그램이 사용중입니다.`
           );
         } else {
           printer.error(err);
@@ -52,8 +52,8 @@ export async function createApp(config: AppConfig) {
 }
 
 function defaultErrorHandler(): ErrorRequestHandler {
-  return (err, req, res) => {
-    printer.error(err);
-    res.status(500).json({ message: "올바르지 않은 경로입니다." });
+  return (err, req, res, next) => {
+    res.status(500).json({ message: err.toString() });
+    throw err;
   };
 }

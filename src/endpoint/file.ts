@@ -25,7 +25,10 @@ function setEndpoint(router: Router, db: Repository) {
     upload.single("file"),
     asyncRoute(async (req, res) => {
       if (!req.file) {
-        throw new Error("파일 업로드에 실패했습니다.");
+        res.status(400).json({
+          message: "요청에 올바른 file 필드가 없습니다.",
+        });
+        return;
       }
 
       const fileKey = req.file.filename;
