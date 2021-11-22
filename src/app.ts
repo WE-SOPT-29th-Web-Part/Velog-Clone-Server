@@ -1,4 +1,5 @@
 import express, { ErrorRequestHandler } from "express";
+import cors from "cors";
 import morgan from "morgan";
 import { getAPIEndpoints } from "./endpoint";
 import { LocalStorageRepository } from "./repository/localStorageRepository";
@@ -17,6 +18,7 @@ export async function createApp(config: AppConfig) {
   const db = new LocalStorageRepository("data/db");
 
   app.use(morgan("dev"));
+  app.use(cors());
 
   const apiRouter = await getAPIEndpoints(db);
   app.use("/api", apiRouter);
