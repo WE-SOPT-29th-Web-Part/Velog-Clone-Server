@@ -10,6 +10,71 @@ Velog Clone에서 사용할 수 있는 서버입니다.
 
 ## API
 
+### 글 보기
+
+#### GET /api/article/[Article 아이디]
+
+Article
+| 필드 이름 | 필드 값 | 타입 |
+| --------- | ----------------- | --- |
+| id | Article 아이디 | string |
+| title | 제목 | string |
+| body | 내용 | string |
+| summary | 요약 | string |
+| thumbnail | 썸네일 이미지 URL | string |
+| tags | 태그 배열 | string[] |
+| date | 글 쓴 날짜 | string |
+
+---
+
+### 글 목록 보기
+
+#### GET /api/article
+
+##### Response
+
+Article의 배열
+
+---
+
+### 글 쓰기
+
+#### POST /api/article
+
+##### Request
+
+| 필드 이름 | 필드 값           | 타입     |
+| --------- | ----------------- | -------- |
+| title     | 제목              | string   |
+| body      | 내용              | string   |
+| summary   | 요약              | string   |
+| thumbnail | 썸네일 이미지 URL | string   |
+| tags      | 태그 배열         | string[] |
+
+---
+
+### 글 수정
+
+#### PATCH /api/article/[Article 아이디]
+
+Request
+
+| 필드 이름 | 필드 값           | 타입     |
+| --------- | ----------------- | -------- |
+| title     | 제목              | string   |
+| body      | 내용              | string   |
+| summary   | 요약              | string   |
+| thumbnail | 썸네일 이미지 URL | string   |
+| tags      | 태그 배열         | string[] |
+
+---
+
+### 글 삭제
+
+#### DELETE /api/article/[Article 아이디]
+
+---
+
 ### 이미지 업로드
 
 #### POST /api/image
@@ -24,6 +89,6 @@ Content-Type: `multipart/form-data`
 
 ### 이미지 보기
 
-#### GET /api/image/[이미지 Key]
+##### GET /api/image/[이미지 Key]
 
 이미지 Key값은 이미지 업로드 때 받았던 `key` 필드 값입니다.

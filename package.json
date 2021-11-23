@@ -9,6 +9,7 @@
   "dependencies": {
     "@types/cors": "^2.8.12",
     "cors": "^2.8.5",
+    "date-fns": "^2.26.0",
     "express": "^4.17.1",
     "morgan": "^1.10.0",
     "multer": "^1.4.3",

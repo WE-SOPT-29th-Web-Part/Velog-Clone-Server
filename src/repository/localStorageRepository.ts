@@ -3,6 +3,7 @@ import { nanoid } from "nanoid";
 import { Repository } from ".";
 import { Article } from "../entity/article";
 import { File } from "../entity/file";
+import { format } from "date-fns";
 
 export class LocalStorageRepository implements Repository {
   localStorage: LocalStorage;
@@ -31,15 +32,19 @@ export class LocalStorageRepository implements Repository {
     }
   }
 
-  async createArticle(article: Omit<Article, "id">): Promise<void> {
+  async createArticle(article: Omit<Article, "id" | "date">): Promise<void> {
     const articles = await this.getArticles();
-    articles.push({ id: nanoid(), ...article });
+    articles.push({
+      ...article,
+      id: nanoid(),
+      date: format(new Date(), "yyyy년 MM월 dd일"),
+    });
     await this.saveArticles(articles);
   }
 
   async updateArticle(
     articleId: string,
-    article: Omit<Article, "id">
+    article: Omit<Article, "id" | "date">
   ): Promise<void> {
     const articles = await this.getArticles();
     const index = articles.findIndex((article) => article.id === articleId);
@@ -47,7 +52,7 @@ export class LocalStorageRepository implements Repository {
       throw new Error("삭제할 대상 글이 없습니다.");
     }
 
-    articles[index] = { id: articleId, ...article };
+    articles[index] = { ...articles[index], ...article, id: articleId };
 
     await this.saveArticles(articles);
   }

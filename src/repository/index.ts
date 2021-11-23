@@ -5,9 +5,12 @@ export interface Repository {
   createFile(file: File): Promise<void>;
   getFileByKey(key: string): Promise<File | null>;
 
-  createArticle(article: Omit<Article, "id">): Promise<void>;
+  createArticle(article: Omit<Article, "id" | "date">): Promise<void>;
   getArticle(articleId: string): Promise<Article | null>;
   getArticles(): Promise<Article[]>;
-  updateArticle(articleId: string, article: Omit<Article, "id">): Promise<void>;
+  updateArticle(
+    articleId: string,
+    article: Omit<Article, "id" | "date">
+  ): Promise<void>;
   deleteArticle(articleId: Article["id"]): Promise<void>;
 }

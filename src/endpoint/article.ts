@@ -41,7 +41,7 @@ function setEndpoint(router: Router, db: Repository) {
     })
   );
 
-  router.put(
+  router.patch(
     "/article/:articleId",
     asyncRoute(async (req, res) => {
       const articleId = req.params.articleId;
@@ -83,7 +83,7 @@ function setEndpoint(router: Router, db: Repository) {
 function articleFormatGuard(
   obj: unknown,
   res: Response
-): obj is Omit<Article, "id"> {
+): obj is Omit<Article, "id" | "date"> {
   if (typeof obj !== "object" || obj === null) {
     res.status(400).json({ message: `올바르지 않은 객체입니다.` });
     return false;
@@ -94,7 +94,6 @@ function articleFormatGuard(
     "body",
     "tags",
     "summary",
-    "date",
     "thumbnail",
   ];
 
