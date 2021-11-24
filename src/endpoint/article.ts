@@ -55,7 +55,14 @@ function setEndpoint(router: Router, db: Repository) {
       }
 
       if (articleFormatGuard(req.body, res)) {
-        await db.updateArticle(articleId, article);
+        await db.updateArticle(articleId, {
+          ...article,
+          title: req.body.title,
+          body: req.body.body,
+          summary: req.body.summary,
+          tags: req.body.tags,
+          thumbnail: req.body.thumbnail,
+        });
 
         res.status(200).json({ success: true });
       }
