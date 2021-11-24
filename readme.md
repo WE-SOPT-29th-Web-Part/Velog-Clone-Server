@@ -14,16 +14,17 @@ Velog Clone에서 사용할 수 있는 서버입니다.
 
 #### GET /api/article/[Article 아이디]
 
-Article
-| 필드 이름 | 필드 값 | 타입 |
-| --------- | ----------------- | --- |
-| id | Article 아이디 | string |
-| title | 제목 | string |
-| body | 내용 | string |
-| summary | 요약 | string |
-| thumbnail | 썸네일 이미지 URL | string |
-| tags | 태그 배열 | string[] |
-| date | 글 쓴 날짜 | string |
+Article 의 정의
+
+| 필드 이름 | 필드 값           | 타입     |
+| --------- | ----------------- | -------- |
+| id        | Article 아이디    | string   |
+| title     | 제목              | string   |
+| body      | 내용              | string   |
+| summary   | 요약              | string   |
+| thumbnail | 썸네일 이미지 URL | string   |
+| tags      | 태그 배열         | string[] |
+| date      | 글 쓴 날짜        | string   |
 
 ---
 
@@ -57,7 +58,7 @@ Article의 배열
 
 #### PATCH /api/article/[Article 아이디]
 
-Request
+##### Request
 
 | 필드 이름 | 필드 값           | 타입     |
 | --------- | ----------------- | -------- |
@@ -81,13 +82,13 @@ Request
 
 Content-Type: `multipart/form-data`
 
-Request
+##### Request
 
 | 필드 이름 | 필드 값     |
 | --------- | ----------- |
 | file      | 파일 데이터 |
 
-Response
+##### Response
 
 | 필드 이름 | 필드 값                    |
 | --------- | -------------------------- |
