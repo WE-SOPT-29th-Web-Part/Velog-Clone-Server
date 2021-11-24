@@ -1,3 +1,4 @@
+import fs from "fs";
 import { Router, static as staticServe } from "express";
 import { Repository } from "../repository";
 import { asyncRoute } from "../utils/endpoint";
@@ -5,7 +6,11 @@ import { asyncRoute } from "../utils/endpoint";
 import multer from "multer";
 import { File } from "../entity/file";
 
-function setEndpoint(router: Router, db: Repository) {
+function setEndpoint(
+  router: Router,
+  db: Repository,
+  config: { baseURL: string }
+) {
   const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, "data/upload");
@@ -17,6 +22,8 @@ function setEndpoint(router: Router, db: Repository) {
       cb(null, `${filename}_${Date.now()}.${ext}`);
     },
   });
+
+  fs.mkdirSync("data/upload", { recursive: true });
 
   const upload = multer({ storage });
 
@@ -42,6 +49,7 @@ function setEndpoint(router: Router, db: Repository) {
 
       res.status(200).json({
         key: fileKey,
+        url: `${config.baseURL}/api/image/${fileKey}`,
       });
     })
   );

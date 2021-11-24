@@ -10,6 +10,7 @@ interface ServerError {
 }
 
 interface AppConfig {
+  baseURL: string;
   port: number;
 }
 
@@ -22,7 +23,7 @@ export async function createApp(config: AppConfig) {
 
   app.use(express.json());
 
-  const apiRouter = await getAPIEndpoints(db);
+  const apiRouter = await getAPIEndpoints(db, config);
   app.use("/api", apiRouter);
 
   app.use("*", (req, res) => {
@@ -38,7 +39,7 @@ export async function createApp(config: AppConfig) {
 
     app
       .listen(config.port, () => {
-        printer.info(`서버를 시작했습니다. [http://localhost:${config.port}]`);
+        printer.info(`서버를 시작했습니다. [${config.baseURL}]`);
       })
       .on("error", (err: ServerError) => {
         if (err.code === "EADDRINUSE") {
