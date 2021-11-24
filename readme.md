@@ -81,9 +81,18 @@ Request
 
 Content-Type: `multipart/form-data`
 
+Request
+
 | 필드 이름 | 필드 값     |
 | --------- | ----------- |
 | file      | 파일 데이터 |
+
+Response
+
+| 필드 이름 | 필드 값                    |
+| --------- | -------------------------- |
+| key       | 이미지의 키값              |
+| url       | 업로드된 이미지의 주소 URL |
 
 ---
 
